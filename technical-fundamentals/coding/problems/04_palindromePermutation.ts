@@ -10,5 +10,23 @@
 // ```
 
 export default function palindromePermutation (str: string): boolean {
-
+    const count: Map<string, number> = new Map()
+    for (let i = 0; i < str.length; i++) {
+        const key = str[i].toLowerCase()
+        if (key === ' ') {
+            continue
+        }
+        count.set(key, (count.get(key) ?? 0) + 1)
+    }
+    let hasOddCount = false
+    for (let [key, val] of count) {
+        // is odd
+        if (val % 2 !== 0) {
+            if (hasOddCount) {
+                return false
+            }
+            hasOddCount = true
+        }
+    }
+    return true
 }
