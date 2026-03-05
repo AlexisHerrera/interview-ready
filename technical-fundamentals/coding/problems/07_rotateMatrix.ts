@@ -6,5 +6,18 @@
 type Matrix = number[][]
 
 export default function rotateMatrix (matrix: Matrix) {
-
+    function rotateMatrixRange(start: number, end: number) {
+        for (let i = 0; i < (end - start); i++) {
+            [matrix[start + i][end], matrix[start][start + i]] = [matrix[start][start + i], matrix[start + i][end]];
+            [matrix[start][start + i], matrix[end - i][start]] = [matrix[end - i][start], matrix[start][start + i]];
+            [matrix[end - i][start], matrix[end][end - i]] = [matrix[end][end - i], matrix[end - i][start]];
+        }
+    }
+    let start = 0
+    let end = matrix.length - 1
+    while (end > start) {
+        rotateMatrixRange(start, end)
+        start += 1
+        end -= 1
+    }
 }
