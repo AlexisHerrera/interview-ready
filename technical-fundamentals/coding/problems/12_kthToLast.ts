@@ -12,4 +12,19 @@ export type Node<T> = {
 export default function kthToLast<T>(
   head: Node<T>,
   k: number,
-): Node<T> | undefined {}
+): Node<T> | undefined {
+  if (k < 1) {
+    return undefined
+  }
+  let result: Node<T> | undefined = head
+  let visited = 1
+  let current = head.next
+  while (current) {
+    if (visited >= k && result) {
+      result = result.next
+    }
+    current = current.next
+    visited += 1
+  }
+  return visited >= k ? result : undefined
+}
