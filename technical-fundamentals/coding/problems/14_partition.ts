@@ -11,7 +11,6 @@
 // Input: 3 -> 5 -> 8 -> 5 -> 10 -> 2 -> 1[partition=5]
 // Output: 3 -> 1 -> 2 -> 10 -> 5 -> 5 -> 8
 // ```
-
 import { LinkedList } from "./10_LinkedList";
 
 export type Node<T> = {
@@ -22,4 +21,40 @@ export type Node<T> = {
 export default function partition<T>(
   head: Node<T> | undefined,
   x: T,
-): Node<T> | undefined {}
+): Node<T> | undefined {
+  let curr = head
+  let headLeft: Node<T> | undefined = undefined 
+  let headRight: Node<T> | undefined = undefined 
+  let tailLeft: Node<T> | undefined = undefined
+  let tailRight: Node<T> | undefined = undefined
+  while (curr) {
+    if (curr.value >= x) {
+      if (tailRight === undefined) {
+        tailRight = curr
+        headRight = curr
+      } else {
+        tailRight.next = curr
+        tailRight = curr
+      }
+    } else {
+      if (tailLeft === undefined) {
+        tailLeft = curr
+        headLeft = curr
+      } else {
+        tailLeft.next = curr
+        tailLeft = curr
+      }
+    }
+    curr = curr.next
+    if (tailRight?.next) {
+      tailRight.next = undefined
+    }
+    if (tailLeft?.next) {
+      tailLeft.next = undefined
+    }
+  }
+  if (tailLeft !== undefined) {
+    tailLeft.next = headRight
+  }
+  return headLeft ? headLeft : headRight
+}
