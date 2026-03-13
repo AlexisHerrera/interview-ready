@@ -19,4 +19,31 @@ export type Node<T> = {
 export default function sumLists(
   list1: Node<number> | undefined,
   list2: Node<number> | undefined,
-): Node<number> | undefined {}
+): Node<number> | undefined {
+  function getNumber(node: Node<number> | undefined): number {
+    if (node === undefined) {
+      return 0
+    }
+    let numberStr = ''
+    let curr: Node<number> | undefined  = node
+    while (curr) {
+      numberStr = `${curr.value}${numberStr}`
+      curr = curr.next
+    }
+    return parseInt(numberStr)
+  }
+  function numberToList(num: number): Node<number> | undefined {
+    if (isNaN(num)) {
+      return undefined
+    }
+    const numStr = String(num)
+    let lastNode: Node<number> | undefined = undefined;
+    for (let i = 0; i < numStr.length; i++) {
+        const newNode: Node<number> = { value: parseInt(numStr[i]), next: lastNode}
+        lastNode = newNode
+    }
+    return lastNode
+  }
+  const resultNumber = getNumber(list1) + getNumber(list2)
+  return numberToList(resultNumber)
+}
