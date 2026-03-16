@@ -14,4 +14,19 @@ export type Node<T> = {
 export default function intersection<T>(
   list1: Node<T> | undefined,
   list2: Node<T> | undefined,
-): Node<T> | undefined {}
+): Node<T> | undefined {
+  const visited: Set<Node<T>> = new Set()
+  let current = list1
+  while (current) {
+    visited.add(current)
+    current = current.next
+  }
+  current = list2
+  while (current) {
+    if (visited.has(current)) {
+      break
+    }
+    current = current.next
+  }
+  return current
+}
