@@ -13,6 +13,27 @@ export type Node<T> = {
 };
 
 export default function removeDups<T>(head?: Node<T>): Node<T> | undefined {
+  if (!head) {
+    return undefined
+  }
+  let prev = head
+  const valuesSaved: Set<T> = new Set([prev.value])
+  let current = head?.next
+  while (current) {
+    if (valuesSaved.has(current.value)) {
+        prev.next = undefined
+      } else {
+        prev.next = current
+        prev = current
+    }
+    valuesSaved.add(current.value)
+    current = current.next
+  }
+  return head
+}
+
+
+function removeDupsSorted<T>(head?: Node<T>): Node<T> | undefined {
   let prev = head
   let current = head?.next
   while (current) {
