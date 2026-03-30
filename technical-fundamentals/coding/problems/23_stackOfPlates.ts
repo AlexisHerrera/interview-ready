@@ -11,16 +11,36 @@
 // FOLLOW UP: Implement a function popAt(int index) which performs a pop operation on a specific sub-stack.
 
 export default class StackOfPlates<T> {
-    constructor(capacity: number) {
+  private stacks: T[][];
+  private capacity: number;
+  constructor(capacity: number) {
+    this.stacks = [];
+    this.capacity = capacity;
+  }
 
+  push(value: T): void {
+    if (this.stacks.length === 0) {
+      this.stacks.push([value]);
+      return;
     }
-
-    push(value: T): void {
-
+    const currentStack = this.stacks[this.stacks.length - 1];
+    if (currentStack.length == this.capacity) {
+      this.stacks.push([value]);
+    } else {
+      currentStack.push(value);
     }
+    // console.log("Push:", value, "current state:", this.stacks);
+  }
 
-    pop(): T | undefined {
-
+  pop(): T | undefined {
+    if (this.stacks.length === 0) {
+      return;
     }
+    const currentStack = this.stacks[this.stacks.length - 1];
+    const value = currentStack.pop();
+    if (currentStack.length === 0) {
+      this.stacks.pop();
+    }
+    return value;
+  }
 }
-
