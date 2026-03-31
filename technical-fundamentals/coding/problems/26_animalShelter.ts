@@ -19,23 +19,72 @@ export class Animal {
   }
 }
 
-export default class AnimalShelter {
-
-    constructor() {
-    }
-
-    enqueue(type: AnimalType): void {
-
-    }
-
-    dequeueAny(): Animal | undefined {
-
-    }
-
-    dequeueDog(): Animal | undefined {
-    }
-
-    dequeueCat(): Animal | undefined {
-    }
+interface AnimalRegister {
+  animal: Animal;
+  animalNo: number;
 }
 
+export default class AnimalShelter {
+  private dogQueue: AnimalRegister[];
+  private catQueue: AnimalRegister[];
+  private animalNo: number;
+
+  constructor() {
+    this.dogQueue = [];
+    this.catQueue = [];
+    this.animalNo = 0;
+  }
+
+  enqueue(type: AnimalType): void {
+    if (type == "cat") {
+      this.catQueue.push({ animal: new Animal(type), animalNo: this.animalNo });
+    } else {
+      this.dogQueue.push({ animal: new Animal(type), animalNo: this.animalNo });
+    }
+    this.animalNo += 1;
+    // console.log(
+    //   "Queue Dog:",
+    //   this.dogQueue,
+    //   "Queue cat:",
+    //   this.catQueue,
+    //   "seqno:",
+    //   this.animalNo,
+    // );
+  }
+
+  dequeueAny(): Animal | undefined {
+    const olderDog = this.dogQueue[0];
+    const olderCat = this.catQueue[0];
+
+    // console.log("Older dog:", olderDog, "Older cat:", olderCat);
+
+    if (olderCat == null && olderDog == null) {
+      return undefined;
+    }
+
+    if (olderDog && olderCat == null) {
+      const dog = this.dogQueue.shift();
+      return dog == null ? undefined : dog.animal;
+    }
+    if (olderCat && olderDog == null) {
+      const cat = this.catQueue.shift();
+      return cat == null ? undefined : cat.animal;
+    }
+    if (olderDog.animalNo < olderCat.animalNo) {
+      const dog = this.dogQueue.shift();
+      return dog == null ? undefined : dog.animal;
+    }
+    const cat = this.catQueue.shift();
+    return cat == null ? undefined : cat.animal;
+  }
+
+  dequeueDog(): Animal | undefined {
+    const dog = this.dogQueue.shift();
+    return dog == null ? undefined : dog.animal;
+  }
+
+  dequeueCat(): Animal | undefined {
+    const cat = this.catQueue.shift();
+    return cat == null ? undefined : cat.animal;
+  }
+}
