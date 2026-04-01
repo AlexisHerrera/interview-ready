@@ -48,6 +48,22 @@ describe("validateBST", () => {
     expect(validateBST(invalidBST)).toBe(false);
   });
 
+  test("returns false for an invalid BST #3", () => {
+    /*
+            Invalid BST:
+                 10
+                   \
+                   15
+                   /
+                  5 
+        */
+    const invalidBST: TreeNode<number> = {
+      value: 10,
+      right: { value: 15, left: { value: 5 } },
+    };
+    expect(validateBST(invalidBST)).toBe(false);
+  });
+
   test("returns true for an empty tree", () => {
     const emptyTree: TreeNode<number> | undefined = undefined;
     expect(validateBST(emptyTree)).toBe(true);

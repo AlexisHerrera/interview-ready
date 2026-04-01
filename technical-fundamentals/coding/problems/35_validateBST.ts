@@ -8,6 +8,40 @@ export type TreeNode<T> = {
   right?: TreeNode<T>;
 };
 
-export default function validateBST<T>(
+interface ReturnCall {
+  isBST: boolean;
+  max?: number;
+  min?: number;
+}
+
+export default function validateBST<T extends number>(
   node: TreeNode<T> | undefined,
-): boolean {}
+): boolean {
+  function checkBST(node: TreeNode<T> | undefined): ReturnCall {
+    if (node == null) {
+      return { isBST: true };
+    }
+
+    const leftCall = checkBST(node.left);
+    if (!leftCall.isBST) {
+      return { isBST: false };
+    }
+    const rightCall = checkBST(node.right);
+    if (!rightCall.isBST) {
+      return { isBST: false };
+    }
+    const leftCheck = leftCall.max == null ? true : leftCall.max < node.value;
+    const rightCheck =
+      rightCall.min == null ? true : rightCall.min > node.value;
+    if (leftCheck && rightCheck) {
+      return {
+        isBST: true,
+        min: leftCall.min ? leftCall.min : node.value,
+        max: rightCall.max ? rightCall.max : node.value,
+      };
+    }
+    return { isBST: false };
+  }
+  const isBSTCheck = checkBST(node);
+  return isBSTCheck.isBST;
+}
